@@ -128,6 +128,21 @@ enum OAuthRouter: Router {
             return ["client_id": config.token, "client_secret": config.secret, "code": code]
         }
     }
+    
+    #if canImport(FoundationNetworking)
+    var URLRequest: FoundationNetworking.URLRequest? {
+        switch self {
+        case .authorize(let config):
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
+            return request(components!, parameters: params)
+        case .accessToken(let config, _):
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
+            return request(components!, parameters: params)
+        }
+    }
+    #else
 
     var URLRequest: Foundation.URLRequest? {
         switch self {
@@ -141,4 +156,5 @@ enum OAuthRouter: Router {
             return request(components!, parameters: params)
         }
     }
+    #endif
 }
