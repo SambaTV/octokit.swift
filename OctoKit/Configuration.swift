@@ -1,5 +1,8 @@
 import Foundation
 import RequestKit
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public let githubBaseURL = "https://api.github.com"
 public let githubWebURL = "https://github.com"
